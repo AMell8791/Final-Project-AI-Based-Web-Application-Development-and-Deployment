@@ -1,0 +1,24 @@
+# Task 7: Incorporate Error handling
+
+# Function analyzes text for emotions
+def emotion_detector(text_to_analyse):
+    URL = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    input_json = { "raw_document": { "text": text_to_analyse } }
+
+    # Sends text for emotion analys and receives a response.
+    response = requests.post(URL, headers=header, json = input_json)  
+    output_response = response.text
+    
+    if response.status_code == 400:     # If status code is 400, return a dictionary with None values for all keys
+        return {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None
+        }
+    
+    output_response = response.text
+    return output_response 
