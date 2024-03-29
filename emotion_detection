@@ -1,0 +1,36 @@
+# Task 2: Create an emotion detection application using the Watson NLP library
+
+# Imports the requests module to allow Python script send http request.
+# Imports json module to allow functions for coding and decoding json data.
+import requests
+import json
+
+# Function analyzes text for emotions
+def emotion_detector(text_to_analyse):
+    URL = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    input_json = { "raw_document": { "text": text_to_analyse } }
+
+    # Sends text for emotion analys and receives a response.
+    response = requests.post(URL, headers=header, json = input_json)  
+    output_response = response.text
+    
+    return output_response 
+       
+# Function takes response text from the emotion detection service by URL)
+def emotion_predictor(output_response):
+    
+    # Formatting text into a Python dictionary using json function. 
+    json_emotion = json.loads(output_response)
+    emotions = json_emotion['emotionPredictions'][0]['emotion']
+   
+#Finding key in the emotions dictionary with maximum value, which emotion is domenanting.
+    dominant_emotion = max(emotions, key=emotions.get)
+    emotions["dominant_emotion"] = dominant_emotion
+
+    return emotions
+    
+# Test the function with the provided text
+input_json = emotion_detector("I love this new technology")
+print(emotion_predictor(input_json))
+
