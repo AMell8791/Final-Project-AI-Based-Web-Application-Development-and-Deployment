@@ -1,0 +1,28 @@
+# Task 3: Format the output of the application
+
+def emotion_predictor(output_response):
+    # Formatting text into a Python dictionary using json function.
+    json_emotion = json.loads(output_response)
+    emotions = json_emotion['emotionPredictions'][0]['emotion']
+
+    # Extracting individual emotion scores
+    anger_score = emotions.get('anger', 0)
+    disgust_score = emotions.get('disgust', 0)
+    fear_score = emotions.get('fear', 0)
+    joy_score = emotions.get('joy', 0)
+    sadness_score = emotions.get('sadness', 0)
+
+    # Finding the dominant emotion
+    dominant_emotion = max(emotions, key=emotions.get)
+
+    # Constructing the output dictionary
+    output = {
+        'anger': anger_score,
+        'disgust': disgust_score,
+        'fear': fear_score,
+        'joy': joy_score,
+        'sadness': sadness_score,
+        'dominant_emotion': dominant_emotion
+    }
+
+    return output
